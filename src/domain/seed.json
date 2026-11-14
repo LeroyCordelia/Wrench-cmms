@@ -1,0 +1,1231 @@
+{
+  "assets": [
+    {
+      "asset_id": "AST-0001",
+      "name": "Bottling Line 1",
+      "category": "system",
+      "location_id": "LOC-0001",
+      "parent_asset_id": null,
+      "manufacturer": null,
+      "model": "Line 1",
+      "serial": null,
+      "install_date": "04/15/2018",
+      "criticality": "A",
+      "status": "in service",
+      "hp": null,
+      "voltage": null,
+      "phase": null,
+      "fla_amps": null,
+      "rpm": null,
+      "design_psi": null,
+      "capacity_gal": null,
+      "qr_url": "https://cmms.local/a/AST-0001",
+      "notes": "EXAMPLE — parent system for Line 1 filler, capper, labeler, and conveyors. Not a single motor.",
+      "data_flag": "EXAMPLE"
+    },
+    {
+      "asset_id": "AST-0002",
+      "name": "Rotary Filler",
+      "category": "filler",
+      "location_id": "LOC-0001",
+      "parent_asset_id": "AST-0001",
+      "manufacturer": "Bertolaso",
+      "model": "Example 20-head rotary",
+      "serial": "EX-FILLER-0002",
+      "install_date": "04/15/2018",
+      "criticality": "A",
+      "status": "in service",
+      "hp": 7.5,
+      "voltage": 480,
+      "phase": "3",
+      "fla_amps": 10.5,
+      "rpm": 1750,
+      "design_psi": 45,
+      "capacity_gal": null,
+      "qr_url": "https://cmms.local/a/AST-0002",
+      "notes": "EXAMPLE — nameplate values are illustrative, not a copy of the real machine plate. Product: wine. Design pressure 45 psi.",
+      "data_flag": "EXAMPLE"
+    },
+    {
+      "asset_id": "AST-0003",
+      "name": "Corker / Capper",
+      "category": "capper",
+      "location_id": "LOC-0001",
+      "parent_asset_id": "AST-0001",
+      "manufacturer": "Bertolaso",
+      "model": "Example monoblock capper",
+      "serial": "EX-CAPPER-0003",
+      "install_date": "04/15/2018",
+      "criticality": "A",
+      "status": "in service",
+      "hp": 5,
+      "voltage": 480,
+      "phase": "3",
+      "fla_amps": 7.2,
+      "rpm": 1750,
+      "design_psi": null,
+      "capacity_gal": null,
+      "qr_url": "https://cmms.local/a/AST-0003",
+      "notes": "EXAMPLE — cork and/or screw-cap heads. Nameplate figures are illustrative.",
+      "data_flag": "EXAMPLE"
+    },
+    {
+      "asset_id": "AST-0004",
+      "name": "Pressure-Sensitive Labeler",
+      "category": "labeler",
+      "location_id": "LOC-0001",
+      "parent_asset_id": "AST-0001",
+      "manufacturer": "Krones",
+      "model": "Example PS labeler",
+      "serial": "EX-LABEL-0004",
+      "install_date": "06/01/2019",
+      "criticality": "A",
+      "status": "in service",
+      "hp": 3,
+      "voltage": 480,
+      "phase": "3",
+      "fla_amps": 4.8,
+      "rpm": 1750,
+      "design_psi": 80,
+      "capacity_gal": null,
+      "qr_url": "https://cmms.local/a/AST-0004",
+      "notes": "EXAMPLE — front and back pressure-sensitive labels. Air supply 80 psi. Nameplate figures are illustrative.",
+      "data_flag": "EXAMPLE"
+    },
+    {
+      "asset_id": "AST-0005",
+      "name": "Rotary Screw Air Compressor",
+      "category": "compressor",
+      "location_id": "LOC-0003",
+      "parent_asset_id": null,
+      "manufacturer": "Ingersoll Rand",
+      "model": "Example 25 hp rotary screw",
+      "serial": "EX-COMP-0005",
+      "install_date": "09/20/2016",
+      "criticality": "A",
+      "status": "in service",
+      "hp": 25,
+      "voltage": 480,
+      "phase": "3",
+      "fla_amps": 34,
+      "rpm": 1775,
+      "design_psi": 125,
+      "capacity_gal": null,
+      "qr_url": "https://cmms.local/a/AST-0005",
+      "notes": "EXAMPLE — plant air for Line 1 and cellar. Setpoint 125 psi. Receiver and dryer are separate assets to add later if needed.",
+      "data_flag": "EXAMPLE"
+    }
+  ],
+  "workOrders": [
+    {
+      "wo_id": "WO-000001",
+      "asset_id": "AST-0002",
+      "type": "corrective",
+      "priority": "2 — Urgent",
+      "status": "in progress",
+      "requested_by": "Bottling Lead",
+      "assigned_to": "LeRoy Werstler",
+      "created": "11/12/2026 07:40",
+      "due": "11/13/2026 15:00",
+      "completed": null,
+      "problem": "Wine dripping at the starwheel. Suspect worn filler seals on heads 4-6.",
+      "action_taken": "Isolated heads 4-6. Seals kit pulled from stores. Waiting for a line window to finish the swap.",
+      "labor_hours": 1.5,
+      "downtime_minutes": 40,
+      "pm_id": null,
+      "qr_url": "https://cmms.local/w/WO-000001",
+      "notes": "EXAMPLE",
+      "data_flag": "EXAMPLE"
+    },
+    {
+      "wo_id": "WO-000002",
+      "asset_id": "AST-0005",
+      "type": "PM",
+      "priority": "3 — Normal",
+      "status": "complete",
+      "requested_by": "CMMS (PM-0001)",
+      "assigned_to": "Andres Salazar",
+      "created": "11/03/2026 06:00",
+      "due": "11/07/2026 14:00",
+      "completed": "11/06/2026 11:20",
+      "problem": "Quarterly compressor PM: oil, separator / air filter check, drain receiver, record hours.",
+      "action_taken": "Changed oil (5 gal) and air filter. Drained receiver. Belt tension OK. Recorded 12,450 hours. No leaks found.",
+      "labor_hours": 2.25,
+      "downtime_minutes": 30,
+      "pm_id": "PM-0001",
+      "qr_url": "https://cmms.local/w/WO-000002",
+      "notes": "EXAMPLE — generated from PM-0001.",
+      "data_flag": "EXAMPLE"
+    },
+    {
+      "wo_id": "WO-000003",
+      "asset_id": "AST-0004",
+      "type": "inspection",
+      "priority": "3 — Normal",
+      "status": "open",
+      "requested_by": "LeRoy Werstler",
+      "assigned_to": "Maya Chen",
+      "created": "11/13/2026 08:15",
+      "due": "11/14/2026 16:00",
+      "completed": null,
+      "problem": "Label placement drifting to the trailing edge after about an hour on the run. Inspect sensors, web tension, and peeler plate.",
+      "action_taken": null,
+      "labor_hours": null,
+      "downtime_minutes": null,
+      "pm_id": "PM-0003",
+      "qr_url": "https://cmms.local/w/WO-000003",
+      "notes": "EXAMPLE",
+      "data_flag": "EXAMPLE"
+    },
+    {
+      "wo_id": "WO-000004",
+      "asset_id": "AST-0001",
+      "type": "safety",
+      "priority": "1 — Emergency",
+      "status": "open",
+      "requested_by": "Bottling Lead",
+      "assigned_to": "LeRoy Werstler",
+      "created": "11/13/2026 13:05",
+      "due": "11/13/2026 17:00",
+      "completed": null,
+      "problem": "Infeed E-stop on Line 1 did not drop the line on a test before the afternoon run. Do not start the line until this is cleared.",
+      "action_taken": null,
+      "labor_hours": null,
+      "downtime_minutes": null,
+      "pm_id": null,
+      "qr_url": "https://cmms.local/w/WO-000004",
+      "notes": "EXAMPLE — safety work: lock out and tag until verified.",
+      "data_flag": "EXAMPLE"
+    },
+    {
+      "wo_id": "WO-000005",
+      "asset_id": "AST-0003",
+      "type": "corrective",
+      "priority": "3 — Normal",
+      "status": "waiting parts",
+      "requested_by": "Andres Salazar",
+      "assigned_to": "Andres Salazar",
+      "created": "11/10/2026 09:30",
+      "due": "11/18/2026 16:00",
+      "completed": null,
+      "problem": "Capper chuck on head 2 is scored and will not hold a cap consistently. Needs a replacement chuck.",
+      "action_taken": "Head 2 taken out of service. Spare chuck ordered from the vendor (see WO_Parts). Temporary run on remaining heads.",
+      "labor_hours": 0.75,
+      "downtime_minutes": 0,
+      "pm_id": null,
+      "qr_url": "https://cmms.local/w/WO-000005",
+      "notes": "EXAMPLE — waiting on PRT-0005.",
+      "data_flag": "EXAMPLE"
+    }
+  ],
+  "pmSchedules": [
+    {
+      "pm_id": "PM-0001",
+      "asset_id": "AST-0005",
+      "task": "Quarterly compressor service — oil, filters, drains, belts, leak check, log hours.",
+      "frequency_type": "calendar",
+      "interval": 3,
+      "unit": "months",
+      "last_done": "11/06/2026",
+      "next_due": "02/06/2027",
+      "est_hours": 2.5,
+      "sop_ref": "SOP-UTIL-COMP-QTR",
+      "parts_kit": "PRT-0002, PRT-0003",
+      "notes": "EXAMPLE — calendar PM. Also see the 2,000-hour meter PM (PM-0004).",
+      "data_flag": "EXAMPLE"
+    },
+    {
+      "pm_id": "PM-0002",
+      "asset_id": "AST-0002",
+      "task": "Monthly filler inspection — seals, starwheel, splash guards, lubrication, leak check at 45 psi.",
+      "frequency_type": "calendar",
+      "interval": 1,
+      "unit": "months",
+      "last_done": "10/15/2026",
+      "next_due": "11/15/2026",
+      "est_hours": 1.5,
+      "sop_ref": "SOP-BTL-FILL-MON",
+      "parts_kit": "PRT-0001",
+      "notes": "EXAMPLE",
+      "data_flag": "EXAMPLE"
+    },
+    {
+      "pm_id": "PM-0003",
+      "asset_id": "AST-0004",
+      "task": "Weekly labeler check — sensors, peeler plate, web path, air at 80 psi, wipe glue-side residue if any.",
+      "frequency_type": "calendar",
+      "interval": 1,
+      "unit": "weeks",
+      "last_done": "11/06/2026",
+      "next_due": "11/13/2026",
+      "est_hours": 0.75,
+      "sop_ref": "SOP-BTL-LBL-WK",
+      "parts_kit": "PRT-0004",
+      "notes": "EXAMPLE — WO-000003 was opened from this PM after drift was seen on a run.",
+      "data_flag": "EXAMPLE"
+    },
+    {
+      "pm_id": "PM-0004",
+      "asset_id": "AST-0005",
+      "task": "2,000-hour compressor service — oil, separator, filters, and full inspection per the OEM manual.",
+      "frequency_type": "meter",
+      "interval": 2000,
+      "unit": "hours",
+      "last_done": "06/12/2026",
+      "next_due": null,
+      "est_hours": 4,
+      "sop_ref": "SOP-UTIL-COMP-2000HR",
+      "parts_kit": "PRT-0002, PRT-0003",
+      "notes": "EXAMPLE — due when Meter_Readings hours reach last service hours + 2,000. Last service was at 10,820 hours; next due at 12,820. Current example reading is 12,450 hours.",
+      "data_flag": "EXAMPLE"
+    },
+    {
+      "pm_id": "PM-0005",
+      "asset_id": "AST-0003",
+      "task": "Monthly capper / corker inspection — chucks, cams, clutch, and cap feed. Replace scored chucks.",
+      "frequency_type": "calendar",
+      "interval": 1,
+      "unit": "months",
+      "last_done": "10/20/2026",
+      "next_due": "11/20/2026",
+      "est_hours": 1,
+      "sop_ref": "SOP-BTL-CAP-MON",
+      "parts_kit": "PRT-0005",
+      "notes": "EXAMPLE",
+      "data_flag": "EXAMPLE"
+    }
+  ],
+  "parts": [
+    {
+      "part_id": "PRT-0001",
+      "description": "Filler starwheel seal kit (set of heads)",
+      "manufacturer": "Bertolaso",
+      "mfr_part_no": "EX-SEAL-KIT-20",
+      "vendor": "Peninsula Packing Supply",
+      "vendor_part_no": "PPS-SEAL-20",
+      "unit_cost_usd": 286.5,
+      "qty_on_hand": 1,
+      "min_qty": 1,
+      "reorder_qty": 1,
+      "bin_location": "STOR-A-12",
+      "used_on_asset_ids": "AST-0002",
+      "uom": "kit",
+      "notes": "EXAMPLE — one kit covers a full head-set reseal. Confirm the real OEM kit number before ordering.",
+      "data_flag": "EXAMPLE"
+    },
+    {
+      "part_id": "PRT-0002",
+      "description": "Rotary-screw compressor lubricant, 5 gal pail",
+      "manufacturer": "Ingersoll Rand",
+      "mfr_part_no": "EX-OIL-46-5GAL",
+      "vendor": "Air Power West",
+      "vendor_part_no": "APW-IR-46-5",
+      "unit_cost_usd": 142,
+      "qty_on_hand": 2,
+      "min_qty": 1,
+      "reorder_qty": 2,
+      "bin_location": "STOR-U-03",
+      "used_on_asset_ids": "AST-0005",
+      "uom": "pail",
+      "notes": "EXAMPLE — 5 gallon pail. Do not substitute automotive oil. US gallons, not liters.",
+      "data_flag": "EXAMPLE"
+    },
+    {
+      "part_id": "PRT-0003",
+      "description": "Compressor intake air filter element",
+      "manufacturer": "Ingersoll Rand",
+      "mfr_part_no": "EX-AF-259",
+      "vendor": "Air Power West",
+      "vendor_part_no": "APW-AF-259",
+      "unit_cost_usd": 68.4,
+      "qty_on_hand": 2,
+      "min_qty": 1,
+      "reorder_qty": 2,
+      "bin_location": "STOR-U-03",
+      "used_on_asset_ids": "AST-0005",
+      "uom": "each",
+      "notes": "EXAMPLE",
+      "data_flag": "EXAMPLE"
+    },
+    {
+      "part_id": "PRT-0004",
+      "description": "Labeler drive belt",
+      "manufacturer": "Krones",
+      "mfr_part_no": "EX-BLT-4410",
+      "vendor": "Peninsula Packing Supply",
+      "vendor_part_no": "PPS-BLT-4410",
+      "unit_cost_usd": 54.75,
+      "qty_on_hand": 3,
+      "min_qty": 1,
+      "reorder_qty": 2,
+      "bin_location": "STOR-A-08",
+      "used_on_asset_ids": "AST-0004",
+      "uom": "each",
+      "notes": "EXAMPLE",
+      "data_flag": "EXAMPLE"
+    },
+    {
+      "part_id": "PRT-0005",
+      "description": "Capper chuck assembly, head 2 style",
+      "manufacturer": "Bertolaso",
+      "mfr_part_no": "EX-CHK-H2",
+      "vendor": "Peninsula Packing Supply",
+      "vendor_part_no": "PPS-CHK-H2",
+      "unit_cost_usd": 419,
+      "qty_on_hand": 0,
+      "min_qty": 1,
+      "reorder_qty": 1,
+      "bin_location": "STOR-A-12",
+      "used_on_asset_ids": "AST-0003",
+      "uom": "each",
+      "notes": "EXAMPLE — qty_on_hand is 0; this is the part on order for WO-000005.",
+      "data_flag": "EXAMPLE"
+    }
+  ],
+  "woParts": [
+    {
+      "wo_id": "WO-000001",
+      "part_id": "PRT-0001",
+      "qty": 1,
+      "cost": 286.5,
+      "notes": "EXAMPLE — kit staged for the seal swap, not yet installed.",
+      "data_flag": "EXAMPLE"
+    },
+    {
+      "wo_id": "WO-000002",
+      "part_id": "PRT-0002",
+      "qty": 1,
+      "cost": 142,
+      "notes": "EXAMPLE — one 5 gal pail used on the quarterly PM.",
+      "data_flag": "EXAMPLE"
+    },
+    {
+      "wo_id": "WO-000002",
+      "part_id": "PRT-0003",
+      "qty": 1,
+      "cost": 68.4,
+      "notes": "EXAMPLE — intake filter replaced on the quarterly PM.",
+      "data_flag": "EXAMPLE"
+    },
+    {
+      "wo_id": "WO-000005",
+      "part_id": "PRT-0005",
+      "qty": 1,
+      "cost": 419,
+      "notes": "EXAMPLE — chuck on order; cost is the expected unit cost.",
+      "data_flag": "EXAMPLE"
+    },
+    {
+      "wo_id": "WO-000003",
+      "part_id": "PRT-0004",
+      "qty": 0,
+      "cost": 0,
+      "notes": "EXAMPLE — inspection only so far; belt reserved if the drive is glazed.",
+      "data_flag": "EXAMPLE"
+    }
+  ],
+  "meterReadings": [
+    {
+      "asset_id": "AST-0005",
+      "reading": 12450,
+      "unit": "hours",
+      "timestamp": "11/06/2026 11:10",
+      "source": "manual",
+      "notes": "EXAMPLE — logged during PM-0001 / WO-000002.",
+      "data_flag": "EXAMPLE"
+    },
+    {
+      "asset_id": "AST-0005",
+      "reading": 12210,
+      "unit": "hours",
+      "timestamp": "10/09/2026 14:00",
+      "source": "manual",
+      "notes": "EXAMPLE — prior monthly log.",
+      "data_flag": "EXAMPLE"
+    },
+    {
+      "asset_id": "AST-0005",
+      "reading": 125,
+      "unit": "psi",
+      "timestamp": "11/06/2026 11:15",
+      "source": "manual",
+      "notes": "EXAMPLE — discharge pressure after the PM, plant setpoint.",
+      "data_flag": "EXAMPLE"
+    },
+    {
+      "asset_id": "AST-0002",
+      "reading": 1842600,
+      "unit": "cycles",
+      "timestamp": "11/12/2026 16:45",
+      "source": "manual",
+      "notes": "EXAMPLE — filler head cycles, end of shift. Future Ignition hook.",
+      "data_flag": "EXAMPLE"
+    },
+    {
+      "asset_id": "AST-0003",
+      "reading": 1837940,
+      "unit": "cycles",
+      "timestamp": "11/12/2026 16:45",
+      "source": "manual",
+      "notes": "EXAMPLE — capper cycles, end of shift. Future Ignition hook.",
+      "data_flag": "EXAMPLE"
+    }
+  ],
+  "technicians": [
+    {
+      "tech_id": "TECH-001",
+      "name": "LeRoy Werstler",
+      "craft": "multi-craft",
+      "shift": "day",
+      "phone": null,
+      "active": "yes",
+      "notes": "EXAMPLE starter row — confirm contact and shift before going live.",
+      "data_flag": "EXAMPLE"
+    },
+    {
+      "tech_id": "TECH-002",
+      "name": "Maya Chen",
+      "craft": "electrical",
+      "shift": "day",
+      "phone": null,
+      "active": "yes",
+      "notes": "EXAMPLE fictional technician for dropdown testing.",
+      "data_flag": "EXAMPLE"
+    },
+    {
+      "tech_id": "TECH-003",
+      "name": "Andres Salazar",
+      "craft": "mechanical",
+      "shift": "swing",
+      "phone": null,
+      "active": "yes",
+      "notes": "EXAMPLE fictional technician for dropdown testing.",
+      "data_flag": "EXAMPLE"
+    },
+    {
+      "tech_id": "TECH-004",
+      "name": "Chris Novak",
+      "craft": "refrigeration",
+      "shift": "day",
+      "phone": null,
+      "active": "yes",
+      "notes": "EXAMPLE fictional technician — glycol / HVAC coverage.",
+      "data_flag": "EXAMPLE"
+    },
+    {
+      "tech_id": "TECH-005",
+      "name": "Sam Ortiz",
+      "craft": "multi-craft",
+      "shift": "on-call",
+      "phone": null,
+      "active": "yes",
+      "notes": "EXAMPLE fictional on-call coverage.",
+      "data_flag": "EXAMPLE"
+    }
+  ],
+  "locations": [
+    {
+      "location_id": "LOC-0001",
+      "name": "Bottling Hall",
+      "area_line": "Line 1",
+      "notes": "EXAMPLE — main enclosed bottling room, Suisun City plant.",
+      "data_flag": "EXAMPLE"
+    },
+    {
+      "location_id": "LOC-0002",
+      "name": "Cellar",
+      "area_line": "Tank Farm East",
+      "notes": "EXAMPLE — tank farm east of the bottling hall.",
+      "data_flag": "EXAMPLE"
+    },
+    {
+      "location_id": "LOC-0003",
+      "name": "Utilities",
+      "area_line": "Mechanical Room",
+      "notes": "EXAMPLE — air, glycol, and electrical gear serving the plant.",
+      "data_flag": "EXAMPLE"
+    },
+    {
+      "location_id": "LOC-0004",
+      "name": "Case Goods",
+      "area_line": "Warehouse",
+      "notes": "EXAMPLE — finished goods and packaging supplies.",
+      "data_flag": "EXAMPLE"
+    },
+    {
+      "location_id": "LOC-0005",
+      "name": "Barrel Room",
+      "area_line": "Cellar West",
+      "notes": "EXAMPLE — barrel storage west cellar.",
+      "data_flag": "EXAMPLE"
+    }
+  ],
+  "lists": {
+    "headers": [
+      "category",
+      "criticality",
+      "asset_status",
+      "wo_type",
+      "priority",
+      "wo_status",
+      "frequency_type",
+      "interval_unit",
+      "craft",
+      "shift",
+      "meter_unit",
+      "voltage",
+      "phase",
+      "data_flag",
+      "active",
+      "reading_source"
+    ],
+    "rows": [
+      [
+        "filler",
+        "A",
+        "in service",
+        "corrective",
+        "1 — Emergency",
+        "open",
+        "calendar",
+        "days",
+        "multi-craft",
+        "day",
+        "hours",
+        "120",
+        "1",
+        "EXAMPLE",
+        "yes",
+        "manual"
+      ],
+      [
+        "labeler",
+        "B",
+        "down",
+        "PM",
+        "2 — Urgent",
+        "in progress",
+        "meter",
+        "weeks",
+        "mechanical",
+        "swing",
+        "cycles",
+        "208",
+        "3",
+        "REAL",
+        "no",
+        "ignition"
+      ],
+      [
+        "capper",
+        "C",
+        "spare",
+        "inspection",
+        "3 — Normal",
+        "waiting parts",
+        null,
+        "months",
+        "electrical",
+        "night",
+        "psi",
+        "240",
+        null,
+        null,
+        null,
+        "other"
+      ],
+      [
+        "conveyor",
+        null,
+        "out of service",
+        "safety",
+        "4 — Low",
+        "complete",
+        null,
+        "hours",
+        "millwright",
+        "on-call",
+        "°F",
+        "277",
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "pump",
+        null,
+        "retired",
+        null,
+        null,
+        "canceled",
+        null,
+        "cycles",
+        "instrumentation",
+        null,
+        "gallons",
+        "480",
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "compressor",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        "refrigeration",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "chiller",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        "sanitation",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "boiler",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "tank",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "HVAC",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "system",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "other",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  "readmeRows": [
+    [
+      "CMMS Data Template",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Winery & bottling operation  •  Suisun City, CA  •  Engineering / Facility Maintenance",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Version 1.0  •  November 13, 2026  •  Pacific Time  •  Prepared for LeRoy Werstler  •  Units: US customary only (°F, psi, gallons, feet, pounds, hp)",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "This workbook is the Phase 1 database the phone app will read. Example rows are flagged EXAMPLE — delete or convert them before going live, and do not reuse their IDs.",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "RULES  —  read these before adding real data",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Never reuse IDs",
+      "Once an ID is used (asset, work order, part, PM, technician, or location), it is retired forever — even if you delete or cancel the record. Skipping numbers is fine. Reusing numbers is not.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Do not rename headers or sheets",
+      "The app reads exact sheet names and exact column header names (asset_id, wo_id, and so on). You can add columns later if needed, but do not rename, reorder-by-cutting, or delete the existing headers.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Add rows inside the table",
+      "Each data sheet is an Excel table. Click the last cell in the table and press Tab to get a new row. That keeps filters, dropdowns, and the app's table range intact.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Use the dropdowns",
+      "Status, type, category, priority, craft, and similar fields have dropdowns fed by the Lists sheet. If you need a new choice, add it on Lists — don't type a one-off spelling.",
+      null,
+      null,
+      null
+    ],
+    [
+      "US customary units only",
+      "Temperatures in °F, pressure in psi, volume in gallons, length in feet, weight in pounds, power in hp. Do not use °C, bar, liters, meters, kilograms, or kW.",
+      null,
+      null,
+      null
+    ],
+    [
+      "EXAMPLE rows are not live data",
+      "Every starter row has data_flag = EXAMPLE. Before the app goes live, delete those rows or change data_flag to REAL after you have reviewed them. Keep the high-water marks below — do not restart IDs at 0001 if 0001-0005 were already used.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Dates and money",
+      "Dates are local Pacific Time in MM/DD/YYYY. Date-and-time fields use MM/DD/YYYY HH:MM (24-hour). Money is US dollars.",
+      null,
+      null,
+      null
+    ],
+    [
+      "QR URLs",
+      "qr_url follows a stable pattern the app will keep forever: https://cmms.local/a/AST-0001 for assets and https://cmms.local/w/WO-000001 for work orders. Replace only the host (cmms.local) when the app is published. Do not change the /a/ and /w/ paths.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "ID CONVENTIONS  —  uppercase, hyphen, zero-padded, never recycled",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Entity",
+      "Sheet",
+      "Pattern",
+      "Example",
+      "Next ID to use"
+    ],
+    [
+      "Asset",
+      "Assets",
+      "AST-0000",
+      "AST-0001",
+      "AST-0006"
+    ],
+    [
+      "Work order",
+      "WorkOrders",
+      "WO-000000",
+      "WO-000001",
+      "WO-000006"
+    ],
+    [
+      "PM schedule",
+      "PM_Schedules",
+      "PM-0000",
+      "PM-0001",
+      "PM-0006"
+    ],
+    [
+      "Part",
+      "Parts",
+      "PRT-0000",
+      "PRT-0001",
+      "PRT-0006"
+    ],
+    [
+      "Technician",
+      "Technicians",
+      "TECH-000",
+      "TECH-001",
+      "TECH-006"
+    ],
+    [
+      "Location",
+      "Locations",
+      "LOC-0000",
+      "LOC-0001",
+      "LOC-0006"
+    ],
+    [
+      "WO parts line",
+      "WO_Parts",
+      "(no own ID — wo_id + part_id)",
+      "WO-000001 + PRT-0001",
+      "—"
+    ],
+    [
+      "Meter reading",
+      "Meter_Readings",
+      "(no own ID — asset + time)",
+      "AST-0005 @ 11/12/2026 14:30",
+      "—"
+    ],
+    [
+      "High-water marks above already count the five example rows on each main sheet. After you delete EXAMPLE rows, do not go back to AST-0001 — start real assets at AST-0006 (and the same idea for the other IDs). When you issue a new ID, bump the Next ID in this table so the next person (or the app) does not collide.",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "SHEETS  —  one entity per sheet; the app reads these names",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Sheet",
+      "What it holds",
+      "Key fields",
+      "Links to",
+      null
+    ],
+    [
+      "Assets",
+      "Every piece of equipment and system you maintain. Parent/child lets a filler belong to Bottling Line 1.",
+      "asset_id, name, category, location_id, parent_asset_id, nameplate (hp, voltage, design_psi, capacity_gal), qr_url",
+      "Locations, parent Assets",
+      null
+    ],
+    [
+      "WorkOrders",
+      "Corrective, PM, inspection, and safety jobs. This is the daily working list on the phone.",
+      "wo_id, asset_id, type, priority, status, assigned_to, dates, problem, action_taken, labor_hours, downtime_minutes, qr_url",
+      "Assets, Technicians, PM_Schedules",
+      null
+    ],
+    [
+      "PM_Schedules",
+      "Recurring preventive work, either by calendar (every 3 months) or by meter (every 2,000 hours).",
+      "pm_id, asset_id, task, frequency_type, interval, unit, last_done, next_due, sop_ref, parts_kit",
+      "Assets, Parts",
+      null
+    ],
+    [
+      "Parts",
+      "Storeroom inventory: cost in USD, bin location, min/reorder quantities.",
+      "part_id, description, vendor, unit_cost_usd, qty_on_hand, min_qty, reorder_qty, used_on_asset_ids",
+      "Assets (used_on list)",
+      null
+    ],
+    [
+      "WO_Parts",
+      "Which parts were used on which work order, with quantity and cost.",
+      "wo_id, part_id, qty, cost",
+      "WorkOrders, Parts",
+      null
+    ],
+    [
+      "Meter_Readings",
+      "Runtime hours, cycles, or other readings. Hook for later Ignition SCADA feed.",
+      "asset_id, reading, unit, timestamp, source",
+      "Assets",
+      null
+    ],
+    [
+      "Technicians",
+      "People who can be assigned work. Craft and shift drive filters in the app.",
+      "tech_id, name, craft, shift",
+      "WorkOrders.assigned_to (by name)",
+      null
+    ],
+    [
+      "Locations",
+      "Plant areas and lines. Assets point here by location_id.",
+      "location_id, name, area_line",
+      "Assets",
+      null
+    ],
+    [
+      "Lists",
+      "Dropdown source lists. Add a value here and it appears in the dropdowns. Do not rename these column headers.",
+      "one column per list",
+      "all dropdown fields",
+      null
+    ],
+    [
+      "README",
+      "This sheet — conventions, rules, and the map of the workbook.",
+      "—",
+      "—",
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "HOW THE RECORDS CONNECT",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "A Location (LOC-0001 Bottling Hall) holds many Assets. An Asset may have a parent Asset (AST-0002 Rotary Filler belongs to AST-0001 Bottling Line 1). Work orders point at one Asset and may be assigned to a Technician by name. A work order can be born from a PM schedule (pm_id). Parts used on a job are listed in WO_Parts (wo_id + part_id + qty + cost). A Part can also list the assets it fits in used_on_asset_ids (comma-separated, e.g. AST-0002, AST-0003). Meter readings belong to one Asset and are stamped with a local Pacific timestamp. Source is Manual today; Ignition later.",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "COMMON JOBS IN THIS WORKBOOK",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Add an asset",
+      "Go to Assets, Tab off the last row, assign the next AST- ID, fill name/category/location, set criticality (A = line-stopper, B = important, C = convenience), enter nameplate data in hp / volts / psi / gallons, and paste the qr_url once the label is printed.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Open a work order",
+      "Go to WorkOrders, assign the next WO- ID, pick the asset, type, priority, and status. Write the problem in plain language. Assign a technician. The app will use the same columns, so what you type here is what shows on the phone.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Set up a PM",
+      "Go to PM_Schedules. Calendar PMs use unit days/weeks/months. Meter PMs use hours or cycles and need Meter_Readings to stay current. Put the SOP name in sop_ref and any kit in parts_kit (part IDs, comma-separated).",
+      null,
+      null,
+      null
+    ],
+    [
+      "Receive or issue a part",
+      "Update qty_on_hand on Parts. When a part is used on a job, add a WO_Parts row and leave cost = qty x unit_cost_usd (you can type the amount).",
+      null,
+      null,
+      null
+    ],
+    [
+      "Log a meter reading",
+      "Add a Meter_Readings row: asset, number, unit (hours, cycles, psi, °F, gallons), and the Pacific timestamp. This is also where Ignition will write later.",
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "CRITICALITY, STATUS, AND PRIORITY  (short definitions)",
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "Criticality A",
+      "Failure stops the bottling line or creates a safety / product-loss risk. Target same-day response.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Criticality B",
+      "Important utility or downstream equipment. Plan repair; temporary workaround may be acceptable.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Criticality C",
+      "Convenience or spare. Schedule when convenient.",
+      null,
+      null,
+      null
+    ],
+    [
+      "WO priority 1 — Emergency",
+      "Safety, spill, or the line is down now.",
+      null,
+      null,
+      null
+    ],
+    [
+      "WO priority 2 — Urgent",
+      "Will stop the line or create a quality problem if not handled this shift / next shift.",
+      null,
+      null,
+      null
+    ],
+    [
+      "WO priority 3 — Normal",
+      "Planned or can wait for the next available window.",
+      null,
+      null,
+      null
+    ],
+    [
+      "WO priority 4 — Low",
+      "Nice-to-fix, backlog, or opportunistic work.",
+      null,
+      null,
+      null
+    ],
+    [
+      "Asset status",
+      "in service • down • spare • out of service • retired",
+      null,
+      null,
+      null
+    ],
+    [
+      "WO status",
+      "open • in progress • waiting parts • complete • canceled",
+      null,
+      null,
+      null
+    ]
+  ],
+  "highWater": {
+    "asset": 5,
+    "workOrder": 5,
+    "pm": 5,
+    "part": 5,
+    "technician": 5,
+    "location": 5
+  }
+}

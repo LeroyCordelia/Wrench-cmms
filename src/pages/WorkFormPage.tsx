@@ -41,6 +41,7 @@ function WorkForm({
   const [requestedBy, setRequestedBy] = useState(workOrder?.requested_by ?? techName)
   const [assignedTo, setAssignedTo] = useState(workOrder?.assigned_to ?? techName)
   const [due, setDue] = useState(toDatetimeInput(workOrder?.due ?? null))
+  const [title, setTitle] = useState(workOrder?.title ?? '')
   const [problem, setProblem] = useState(workOrder?.problem ?? '')
   const [action, setAction] = useState(workOrder?.action_taken ?? '')
   const [labor, setLabor] = useState(workOrder?.labor_hours == null ? '' : String(workOrder.labor_hours))
@@ -87,6 +88,7 @@ function WorkForm({
           created: workOrder?.created ?? null,
           due: fromDatetimeInput(due),
           completed: workOrder?.completed ?? null,
+          title,
           problem,
           action_taken: action,
           labor_hours: laborHours,
@@ -120,6 +122,7 @@ function WorkForm({
       </p>
       <Field label="Asset" className="span-2">
         <select value={assetId} onChange={(event) => setAssetId(event.target.value)}>
+          <option value="">No asset</option>
           {snapshot.assets.map((asset) => (
             <option key={asset.asset_id} value={asset.asset_id}>
               {asset.asset_id} · {asset.name}
@@ -154,7 +157,7 @@ function WorkForm({
       <Field label="Requested by">
         <input value={requestedBy} onChange={(event) => setRequestedBy(event.target.value)} />
       </Field>
-      <Field label="Assigned to">
+      <Field label="Assigned to (names or a team, separated by commas)">
         <input list="tech-names" value={assignedTo} onChange={(event) => setAssignedTo(event.target.value)} />
         <datalist id="tech-names">
           {snapshot.technicians.filter((row) => row.active !== 'no').map((row) => (
@@ -162,8 +165,11 @@ function WorkForm({
           ))}
         </datalist>
       </Field>
+      <Field label="Title" className="span-2">
+        <input value={title} onChange={(event) => setTitle(event.target.value)} placeholder="Short name, such as Glycol valve" />
+      </Field>
       <Field label="Problem" className="span-2">
-        <textarea value={problem} onChange={(event) => setProblem(event.target.value)} required />
+        <textarea value={problem} onChange={(event) => setProblem(event.target.value)} />
       </Field>
       <Field label="Action taken" className="span-2">
         <textarea value={action} onChange={(event) => setAction(event.target.value)} />

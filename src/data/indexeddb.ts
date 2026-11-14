@@ -1,9 +1,9 @@
 import { openDB, type IDBPDatabase } from 'idb'
 import { nowPacific } from '../domain/dates'
 import { raiseHighWater } from '../domain/ids'
-import { applyAsset, applyWorkOrder } from '../domain/mutate'
+import { applyAsset, applyWorkOrder, replaceWoTasks } from '../domain/mutate'
 import { defaultBaseUrl } from '../domain/qr'
-import { cloneSeed } from '../domain/seed'
+import { cloneSeed, normalizeSnapshot } from '../domain/seed'
 import type { AppSettings, CmmsSnapshot } from '../domain/types'
 import { snapshotFromWorkbook, workbookFromSnapshot } from './excel'
 import type { CmmsRepository } from './repository'
@@ -42,7 +42,7 @@ export function createIndexedDbRepository(): CmmsRepository {
     async load() {
       const db = await database()
       const existing = await db.get('snapshot', 'current')
-      if (existing) return existing
+      if (existing) return normalizeSnapshot(existing)
       const seed = cloneSeed()
       await db.put('snapshot', seed, 'current')
       return seed
@@ -69,11 +69,18 @@ export function createIndexedDbRepository(): CmmsRepository {
     },
     async saveWorkOrder(input, lines) {
       const db = await database()
-      const snap = (await db.get('snapshot', 'current')) ?? cloneSeed()
+      const snap = normalizeSnapshot((await db.get('snapshot', 'current')) ?? cloneSeed())
       const settings = (await db.get('settings', 'current')) ?? defaultSettings()
       const result = applyWorkOrder(snap, input, lines, settings.baseUrl, nowPacific())
       await db.put('snapshot', result.snapshot, 'current')
       return result
+    },
+    async saveWoTasks(woId, tasks) {
+      const db = await database()
+      const snap = normalizeSnapshot((await db.get('snapshot', 'current')) ?? cloneSeed())
+      const next = replaceWoTasks(snap, woId, tasks)
+      await db.put('snapshot', next, 'current')
+      return next
     },
     async importWorkbook(data) {
       const db = await database()

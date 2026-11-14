@@ -1,4 +1,4 @@
-import type { Location, Part, PmSchedule } from './types'
+import type { Location, Part, PmSchedule, WorkOrder } from './types'
 import { isBeforeDay, isPast } from './dates'
 
 export function blankToNull(value: string | null | undefined): string | null {
@@ -66,22 +66,53 @@ export function pmOverdue(pm: PmSchedule, today: string): boolean {
   return isBeforeDay(pm.next_due, today)
 }
 
+export function workOrderOverdue(workOrder: WorkOrder, now: string): boolean {
+  if (!workOrder.due || isClosedStatus(workOrder.status)) return false
+  return isPast(workOrder.due, now)
+}
+
 export function roundMoney(value: number): number {
   return Math.round(value * 100) / 100
 }
 
+const EXTRA_LISTS: Record<string, string[]> = {
+  wo_type: ['request', 'planned'],
+  frequency_type: ['condition', 'on demand'],
+  step_type: ['checkbox', 'text', 'number', 'note', 'photo', 'option list'],
+  team: ['Cellar', 'Bottling', 'Manager', 'Facilities', 'Unassigned'],
+}
+
 export function listValues(headers: string[], rows: (string | null)[][], header: string): string[] {
   const index = headers.indexOf(header)
-  if (index < 0) return []
   const seen = new Set<string>()
   const values: string[] = []
-  for (const row of rows) {
-    const value = row[index]
-    if (!value || seen.has(value)) continue
+  const push = (value: string) => {
+    if (!value || seen.has(value)) return
     seen.add(value)
     values.push(value)
   }
+  if (index >= 0) {
+    for (const row of rows) {
+      const value = row[index]
+      if (value) push(value)
+    }
+  }
+  for (const value of EXTRA_LISTS[header] ?? []) push(value)
   return values
+}
+
+export function assignedNames(value: string | null | undefined): string[] {
+  if (!value) return []
+  return value.split(',').map((name) => name.trim()).filter(Boolean)
+}
+
+export function isAssignedTo(value: string | null | undefined, name: string): boolean {
+  const needle = name.trim().toLowerCase()
+  return assignedNames(value).some((item) => item.toLowerCase() === needle)
+}
+
+export function workOrderTitle(workOrder: { title?: string | null; problem: string; wo_id: string }): string {
+  return workOrder.title?.trim() || workOrder.problem.trim() || workOrder.wo_id
 }
 
 export function assetIdList(usedOn: string | null | undefined): string[] {

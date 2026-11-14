@@ -1,12 +1,15 @@
+import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useCmms } from '../data/context'
-import { dateOnlyUtc, stampUtc } from '../domain/dates'
-import { frequencyLabel, pmOverdue, trimNum } from '../domain/format'
+import { dateOnlyUtc } from '../domain/dates'
+import { frequencyLabel, pmOverdue } from '../domain/format'
 import { usePageMeta } from '../Shell'
 
 export function PmPage() {
   usePageMeta('PM schedules')
   const { snapshot, today } = useCmms()
+  const [shown, setShown] = useState(40)
+  const assetName = useMemo(() => new Map(snapshot.assets.map((asset) => [asset.asset_id, asset.name])), [snapshot.assets])
   const rows = [...snapshot.pmSchedules].sort((a, b) => {
     const aOver = pmOverdue(a, today) ? 0 : 1
     const bOver = pmOverdue(b, today) ? 0 : 1
@@ -21,38 +24,28 @@ export function PmPage() {
     <>
       <p className="muted">Read only for now. Generating the next work order from a due PM comes in a later update.</p>
       <div className="stack" style={{ marginTop: 12 }}>
-        {rows.map((pm) => {
-          const asset = snapshot.assets.find((row) => row.asset_id === pm.asset_id)
+        {rows.slice(0, shown).map((pm) => {
           const overdue = pmOverdue(pm, today)
-          const latest = snapshot.meterReadings
-            .filter((row) => row.asset_id === pm.asset_id && row.unit === pm.unit)
-            .sort((a, b) => (b.timestamp ? stampUtc(b.timestamp) : 0) - (a.timestamp ? stampUtc(a.timestamp) : 0))[0]
           return (
-            <article key={pm.pm_id} className="card" style={overdue ? { background: '#fff8f7' } : undefined}>
+            <Link key={pm.pm_id} to={`/pm/${pm.pm_id}`} className={`card card-link ${overdue ? 'card-overdue' : ''}`}>
               <div className="between wrap">
                 <span className="mono">{pm.pm_id}</span>
                 {overdue && <span className="chip pri pri-1">Overdue</span>}
               </div>
               <h2>{pm.task}</h2>
-              <p>
-                <Link to={`/a/${pm.asset_id}`}>{asset?.name ?? pm.asset_id}</Link>
-              </p>
               <p className="muted">
-                {frequencyLabel(pm)}
-                {pm.est_hours != null ? ` · ${trimNum(pm.est_hours)} hr` : ''}
+                {assetName.get(pm.asset_id) ?? (pm.asset_id || 'No asset')} · {frequencyLabel(pm)}
+                {pm.next_due ? ` · ${pm.next_due}` : ''}
+                {pm.assigned_to ? ` · ${pm.assigned_to}` : ''}
               </p>
-              <p className="muted">
-                Last done {pm.last_done ?? '—'}
-                {pm.next_due ? ` · Next due ${pm.next_due}` : ' · Due by meter'}
-              </p>
-              {pm.frequency_type === 'meter' && latest && (
-                <p className="muted">
-                  Latest {latest.unit}: {latest.reading == null ? '—' : trimNum(latest.reading)} on {latest.timestamp}
-                </p>
-              )}
-            </article>
+            </Link>
           )
         })}
+        {shown < rows.length && (
+          <button type="button" className="btn btn-ghost btn-block" onClick={() => setShown((count) => count + 80)}>
+            Show more ({rows.length - shown} left)
+          </button>
+        )}
       </div>
     </>
   )

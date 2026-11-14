@@ -26,6 +26,8 @@ You can download the original template from that same Settings screen if you nee
 
 IDs already used on that phone stay retired even if the file you load does not contain them. Wrench will not hand out `AST-0001` again.
 
+The asset list can be a tree (tap the arrow to open a line and see the machines on it) or a flat list. A work order can have a checklist: check a box, pick Yes or No, or type a number. Those answers stay on the phone and go out with the Excel file. PM schedules are read-only here, including their steps.
+
 ## Work orders
 
 Open **Work**, or scan a label.

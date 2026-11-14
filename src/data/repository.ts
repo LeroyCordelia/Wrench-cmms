@@ -1,4 +1,4 @@
-import type { AppSettings, Asset, AssetInput, CmmsSnapshot, WoPartInput, WorkOrder, WorkOrderInput } from '../domain/types'
+import type { AppSettings, Asset, AssetInput, CmmsSnapshot, WoPartInput, WoTask, WorkOrder, WorkOrderInput } from '../domain/types'
 
 /**
  * The only data API the screens use.
@@ -20,6 +20,7 @@ export interface CmmsRepository {
     input: WorkOrderInput,
     lines: WoPartInput[],
   ): Promise<{ snapshot: CmmsSnapshot; workOrder: WorkOrder }>
+  saveWoTasks(woId: string, tasks: WoTask[]): Promise<CmmsSnapshot>
   importWorkbook(data: ArrayBuffer | Uint8Array): Promise<{ snapshot: CmmsSnapshot; warnings: string[] }>
   exportWorkbook(): Promise<Blob>
   resetDemo(): Promise<CmmsSnapshot>

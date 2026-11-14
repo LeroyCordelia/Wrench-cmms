@@ -34,13 +34,9 @@ export function applyAsset(
 ): { snapshot: CmmsSnapshot; asset: Asset } {
   const name = input.name.trim()
   if (!name) throw new Error('Give the asset a name.')
-  if (!input.location_id) throw new Error('Pick the location where this asset sits.')
-  if (!snap.locations.some((location) => location.location_id === input.location_id)) {
+  if (input.location_id && !snap.locations.some((location) => location.location_id === input.location_id)) {
     throw new Error('That location is not in the locations list.')
   }
-  if (!input.category.trim()) throw new Error('Pick a category.')
-  if (!input.criticality.trim()) throw new Error('Pick a criticality: A, B, or C.')
-  if (!input.status.trim()) throw new Error('Pick a status.')
 
   let highWater = snap.highWater
   let assetId = input.asset_id.trim()
@@ -63,6 +59,7 @@ export function applyAsset(
   }
 
   const asset: Asset = {
+    ...existing,
     asset_id: assetId,
     name,
     category: input.category.trim(),
@@ -84,7 +81,9 @@ export function applyAsset(
     qr_url: assetUrl(baseUrl, assetId),
     notes: clean(input.notes),
     data_flag: clean(input.data_flag) || existing?.data_flag || 'REAL',
+    extra: input.extra ?? existing?.extra,
   }
+  if (!asset.extra) delete asset.extra
 
   const assets = existing
     ? snap.assets.map((row) => (row.asset_id === assetId ? asset : row))
@@ -100,15 +99,15 @@ export function applyWorkOrder(
   baseUrl: string,
   now: string,
 ): { snapshot: CmmsSnapshot; workOrder: WorkOrder } {
-  if (!input.asset_id) throw new Error('Pick the asset this job is for.')
-  if (!snap.assets.some((asset) => asset.asset_id === input.asset_id)) {
+  if (input.asset_id && !snap.assets.some((asset) => asset.asset_id === input.asset_id)) {
     throw new Error('That asset was not found.')
   }
   if (!input.type.trim()) throw new Error('Pick a work order type.')
   if (!input.priority.trim()) throw new Error('Pick a priority.')
   if (!input.status.trim()) throw new Error('Pick a status.')
   const problem = input.problem.trim()
-  if (!problem) throw new Error('Describe the problem in plain language.')
+  const title = clean(input.title)
+  if (!problem && !title) throw new Error('Describe the problem, or give the job a title.')
   if (input.labor_hours != null && input.labor_hours < 0) throw new Error('Labor hours cannot be negative.')
   if (input.downtime_minutes != null && input.downtime_minutes < 0) {
     throw new Error('Downtime minutes cannot be negative.')
@@ -135,6 +134,7 @@ export function applyWorkOrder(
 
   const dataFlag = clean(input.data_flag) || existing?.data_flag || 'REAL'
   const workOrder: WorkOrder = {
+    ...existing,
     wo_id: woId,
     asset_id: input.asset_id,
     type: input.type.trim(),
@@ -153,7 +153,10 @@ export function applyWorkOrder(
     qr_url: workOrderUrl(baseUrl, woId),
     notes: clean(input.notes),
     data_flag: dataFlag,
+    title,
+    extra: input.extra ?? existing?.extra,
   }
+  if (!workOrder.extra) delete workOrder.extra
 
   const parts: WoPart[] = lines
     .filter((line) => line.part_id.trim())
@@ -179,4 +182,22 @@ export function applyWorkOrder(
   const woParts = [...snap.woParts.filter((row) => row.wo_id !== woId), ...parts]
 
   return { snapshot: { ...snap, workOrders, woParts, highWater }, workOrder }
+}
+
+export function replaceWoTasks(snap: CmmsSnapshot, woId: string, tasks: CmmsSnapshot['woTasks']): CmmsSnapshot {
+  const next = tasks.map((task) => ({ ...task, wo_id: woId }))
+  const woTasks = []
+  let inserted = false
+  for (const task of snap.woTasks ?? []) {
+    if (task.wo_id === woId) {
+      if (!inserted) {
+        woTasks.push(...next)
+        inserted = true
+      }
+      continue
+    }
+    woTasks.push(task)
+  }
+  if (!inserted) woTasks.push(...next)
+  return { ...snap, woTasks }
 }

@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { QRCodeSVG } from 'qrcode.react'
+import { Checklist } from '../Checklist'
 import { useCmms } from '../data/context'
 import { workOrderUrl } from '../domain/qr'
 import { nowPacific } from '../domain/dates'
-import { duePhrase, formatUsd, isSafetyWork, roundMoney } from '../domain/format'
-import type { WoPartInput, WorkOrder } from '../domain/types'
+import { duePhrase, formatUsd, isSafetyWork, roundMoney, workOrderTitle } from '../domain/format'
+import type { WoPartInput, WoTask, WorkOrder } from '../domain/types'
 import { usePageMeta } from '../Shell'
 import { Field, MissingRecord, PriorityChip, StatusChip, parseOptionalNumber } from '../ui'
 
@@ -41,7 +42,7 @@ interface LineDraft {
 }
 
 function WorkEditor({ workOrder }: { workOrder: WorkOrder }) {
-  const { snapshot, settings, saveWorkOrder } = useCmms()
+  const { snapshot, settings, saveWorkOrder, saveWoTasks } = useCmms()
   const asset = snapshot.assets.find((row) => row.asset_id === workOrder.asset_id)
   const [action, setAction] = useState(workOrder.action_taken ?? '')
   const [labor, setLabor] = useState(workOrder.labor_hours == null ? '' : String(workOrder.labor_hours))
@@ -56,6 +57,9 @@ function WorkEditor({ workOrder }: { workOrder: WorkOrder }) {
         notes: row.notes ?? '',
         data_flag: row.data_flag,
       })),
+  )
+  const [tasks, setTasks] = useState<WoTask[]>(() =>
+    (snapshot.woTasks ?? []).filter((task) => task.wo_id === workOrder.wo_id),
   )
   const [error, setError] = useState<string | null>(null)
   const [saved, setSaved] = useState<string | null>(null)
@@ -133,7 +137,8 @@ function WorkEditor({ workOrder }: { workOrder: WorkOrder }) {
             <PriorityChip priority={workOrder.priority} />
             <span className="chip">{workOrder.type}</span>
           </div>
-          <h2>{workOrder.wo_id}</h2>
+          <h2>{workOrderTitle(workOrder)}</h2>
+          <p className="mono">{workOrder.wo_id}</p>
           {asset ? (
             <p>
               <Link to={`/a/${asset.asset_id}`}>{asset.name}</Link>
@@ -150,7 +155,17 @@ function WorkEditor({ workOrder }: { workOrder: WorkOrder }) {
         </div>
       </article>
       <h3 className="section-title">Problem</h3>
-      <p className="card prose">{workOrder.problem}</p>
+      <p className="card prose">{workOrder.problem || 'No problem text yet.'}</p>
+      <h3 className="section-title">Checklist</h3>
+      <Checklist
+        steps={tasks}
+        editable
+        onResponse={(index, response) => {
+          const next = tasks.map((task, taskIndex) => (taskIndex === index ? { ...task, response } : task))
+          setTasks(next)
+          void saveWoTasks(workOrder.wo_id, next)
+        }}
+      />
       <form
         onSubmit={(event) => {
           event.preventDefault()
@@ -252,6 +267,12 @@ function WorkEditor({ workOrder }: { workOrder: WorkOrder }) {
           </Link>
         </div>
       </form>
+      {workOrder.limble_history && (
+        <details className="card" style={{ marginTop: 12 }}>
+          <summary>Earlier history</summary>
+          <p className="prose">{workOrder.limble_history}</p>
+        </details>
+      )}
       <p className="muted">
         Opened {workOrder.created ?? '—'}
         {workOrder.completed ? ` · Completed ${workOrder.completed}` : ''}

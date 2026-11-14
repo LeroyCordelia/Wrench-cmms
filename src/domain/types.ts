@@ -1,4 +1,11 @@
-/** Column-for-column records. Names match the Excel workbook and stay stable for a later database. */
+/** A workbook cell. Dates are stored as US strings; everything else keeps its number or text. */
+export type Cell = string | number | null
+
+/**
+ * Column-for-column records. Names match the Excel workbook and stay stable for a later database.
+ * Fields added for the Limble import are optional so an older workbook still loads.
+ * `extra` holds any column the app does not have a name for, so export does not drop it.
+ */
 
 export interface Asset {
   asset_id: string
@@ -22,6 +29,10 @@ export interface Asset {
   qr_url: string
   notes: string | null
   data_flag: string
+  limble_asset_id?: number | null
+  location_detail?: string | null
+  tree_level?: number | null
+  extra?: Record<string, Cell>
 }
 
 export interface WorkOrder {
@@ -43,6 +54,15 @@ export interface WorkOrder {
   qr_url: string
   notes: string | null
   data_flag: string
+  title?: string | null
+  limble_task_id?: number | null
+  limble_type?: string | null
+  est_hours?: number | null
+  requestor_email?: string | null
+  scheduled_end?: string | null
+  total_cost_usd?: number | null
+  limble_history?: string | null
+  extra?: Record<string, Cell>
 }
 
 export interface PmSchedule {
@@ -59,6 +79,54 @@ export interface PmSchedule {
   parts_kit: string | null
   notes: string | null
   data_flag: string
+  limble_pm_id?: number | null
+  description?: string | null
+  assigned_to?: string | null
+  schedule_rule?: string | null
+  schedule_anchor?: string | null
+  start_date?: string | null
+  extra?: Record<string, Cell>
+}
+
+export interface PmTask {
+  pm_id: string
+  step_no: number | null
+  parent_step_no: number | null
+  level: number | null
+  step_type: string | null
+  instruction: string | null
+  options: string | null
+  instruction_limble_original: string | null
+  limble_item_id: number | null
+  data_flag: string
+  extra?: Record<string, Cell>
+}
+
+export interface WoTask {
+  wo_id: string
+  step_no: number | null
+  parent_step_no: number | null
+  level: number | null
+  step_type: string | null
+  instruction: string | null
+  options: string | null
+  response: string | null
+  instruction_limble_original: string | null
+  limble_item_id: number | null
+  data_flag: string
+  extra?: Record<string, Cell>
+}
+
+export interface AssetAttribute {
+  asset_id: string
+  asset_name: string | null
+  attribute: string
+  value: Cell
+  unit: string | null
+  notes: string | null
+  data_flag: string
+  limble_asset_id?: number | null
+  extra?: Record<string, Cell>
 }
 
 export interface Part {
@@ -77,6 +145,7 @@ export interface Part {
   uom: string | null
   notes: string | null
   data_flag: string
+  extra?: Record<string, Cell>
 }
 
 export interface WoPart {
@@ -86,6 +155,7 @@ export interface WoPart {
   cost: number | null
   notes: string | null
   data_flag: string
+  extra?: Record<string, Cell>
 }
 
 export interface MeterReading {
@@ -96,6 +166,7 @@ export interface MeterReading {
   source: string | null
   notes: string | null
   data_flag: string
+  extra?: Record<string, Cell>
 }
 
 export interface Technician {
@@ -107,6 +178,7 @@ export interface Technician {
   active: string | null
   notes: string | null
   data_flag: string
+  extra?: Record<string, Cell>
 }
 
 export interface Location {
@@ -115,6 +187,7 @@ export interface Location {
   area_line: string | null
   notes: string | null
   data_flag: string
+  extra?: Record<string, Cell>
 }
 
 export interface ListsBundle {
@@ -143,6 +216,13 @@ export interface CmmsSnapshot {
   lists: ListsBundle
   readmeRows: (string | null)[][]
   highWater: HighWater
+  pmTasks: PmTask[]
+  woTasks: WoTask[]
+  assetAttributes: AssetAttribute[]
+  /** Header row, in order, for each sheet last imported. Missing means "use the original template headers". */
+  sheetColumns?: Record<string, string[]>
+  /** Sheet order last imported, including README. */
+  sheetOrder?: string[]
 }
 
 /** Device-local preferences. Not part of the shared workbook. */

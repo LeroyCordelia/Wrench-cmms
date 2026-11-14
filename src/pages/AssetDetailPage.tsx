@@ -76,7 +76,10 @@ function AssetDetail({ id }: { id: string }) {
             <span className="mono">{asset.asset_id}</span>
             <span>{asset.category}</span>
           </p>
-          <p className="muted">{locationLabel(snapshot.locations, asset.location_id)}</p>
+          <p className="muted">
+            {locationLabel(snapshot.locations, asset.location_id)}
+            {asset.location_detail ? ` · ${asset.location_detail}` : ''}
+          </p>
         </div>
         <div className="qr-wrap" title={url}>
           <QRCodeSVG value={url} size={88} />
@@ -175,6 +178,24 @@ function AssetDetail({ id }: { id: string }) {
               </article>
             ))}
           </div>
+        </>
+      )}
+      {(snapshot.assetAttributes ?? []).some((row) => row.asset_id === asset.asset_id) && (
+        <>
+          <h3 className="section-title">Attributes</h3>
+          <dl className="nameplate">
+            {(snapshot.assetAttributes ?? [])
+              .filter((row) => row.asset_id === asset.asset_id)
+              .map((row) => (
+                <div key={row.attribute}>
+                  <dt>{row.attribute}</dt>
+                  <dd>
+                    {row.value ?? '—'}
+                    {row.unit ? ` ${row.unit}` : ''}
+                  </dd>
+                </div>
+              ))}
+          </dl>
         </>
       )}
       {readings.length > 0 && (

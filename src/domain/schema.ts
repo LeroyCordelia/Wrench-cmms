@@ -115,8 +115,70 @@ export const TECH_HEADERS = [
 
 export const LOCATION_HEADERS = ['location_id', 'name', 'area_line', 'notes', 'data_flag'] as const
 
-export const DATE_ONLY_FIELDS = new Set(['install_date', 'last_done', 'next_due'])
-export const DATETIME_FIELDS = new Set(['created', 'due', 'completed', 'timestamp'])
+export const ASSET_EXTENDED = ['limble_asset_id', 'location_detail', 'tree_level'] as const
+
+export const WORK_ORDER_EXTENDED = [
+  'title',
+  'limble_task_id',
+  'limble_type',
+  'est_hours',
+  'requestor_email',
+  'scheduled_end',
+  'total_cost_usd',
+  'limble_history',
+] as const
+
+export const PM_EXTENDED = [
+  'limble_pm_id',
+  'description',
+  'assigned_to',
+  'schedule_rule',
+  'schedule_anchor',
+  'start_date',
+] as const
+
+export const PM_TASK_HEADERS = [
+  'pm_id',
+  'step_no',
+  'parent_step_no',
+  'level',
+  'step_type',
+  'instruction',
+  'options',
+  'instruction_limble_original',
+  'limble_item_id',
+  'data_flag',
+] as const
+
+export const WO_TASK_HEADERS = [
+  'wo_id',
+  'step_no',
+  'parent_step_no',
+  'level',
+  'step_type',
+  'instruction',
+  'options',
+  'response',
+  'instruction_limble_original',
+  'limble_item_id',
+  'data_flag',
+] as const
+
+export const ATTRIBUTE_HEADERS = [
+  'asset_id',
+  'asset_name',
+  'attribute',
+  'value',
+  'unit',
+  'notes',
+  'data_flag',
+  'limble_asset_id',
+] as const
+
+export const OPTIONAL_SHEETS = ['PM_Tasks', 'WO_Tasks', 'Asset_Attributes'] as const
+
+export const DATE_ONLY_FIELDS = new Set(['install_date', 'last_done', 'next_due', 'start_date'])
+export const DATETIME_FIELDS = new Set(['created', 'due', 'completed', 'timestamp', 'scheduled_end'])
 
 export const NUMBER_FIELDS = new Set([
   'hp',
@@ -136,6 +198,15 @@ export const NUMBER_FIELDS = new Set([
   'qty',
   'cost',
   'reading',
+  'tree_level',
+  'limble_asset_id',
+  'limble_task_id',
+  'limble_pm_id',
+  'limble_item_id',
+  'total_cost_usd',
+  'step_no',
+  'parent_step_no',
+  'level',
 ])
 
 /** README column "Sheet" → which counter the "Next ID" cell belongs to. */

@@ -10,6 +10,7 @@ import { LabelsPage } from './pages/LabelsPage'
 import { MorePage } from './pages/MorePage'
 import { NotFoundPage } from './pages/NotFoundPage'
 import { PartsPage } from './pages/PartsPage'
+import { PmDetailPage } from './pages/PmDetailPage'
 import { PmPage } from './pages/PmPage'
 import { ScanPage } from './pages/ScanPage'
 import { SettingsPage } from './pages/SettingsPage'
@@ -36,6 +37,7 @@ export function App() {
           <Route path="scan" element={<ScanPage />} />
           <Route path="labels" element={<LabelsPage />} />
           <Route path="pm" element={<PmPage />} />
+          <Route path="pm/:id" element={<PmDetailPage />} />
           <Route path="parts" element={<PartsPage />} />
           <Route path="more" element={<MorePage />} />
           <Route path="settings" element={<SettingsPage />} />

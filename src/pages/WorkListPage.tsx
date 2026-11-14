@@ -3,7 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom'
 import { Plus, Search } from 'lucide-react'
 import { useCmms } from '../data/context'
 import { nowPacific, stampUtc } from '../domain/dates'
-import { isClosedStatus, isSafetyWork, priorityRank } from '../domain/format'
+import { isAssignedTo, isClosedStatus, isSafetyWork, priorityRank, workOrderOverdue } from '../domain/format'
 import { usePageMeta } from '../Shell'
 import { WorkOrderCard } from '../ui'
 
@@ -14,6 +14,7 @@ export function WorkListPage() {
   usePageMeta('Work orders')
   const [params, setParams] = useSearchParams()
   const status = params.get('status') || 'active'
+  const overdueOnly = params.get('due') === 'overdue'
   const [query, setQuery] = useState('')
   const [priority, setPriority] = useState('')
   const [mine, setMine] = useState(false)
@@ -21,15 +22,17 @@ export function WorkListPage() {
 
   const jobs = useMemo(() => {
     const needle = query.trim().toLowerCase()
+    const now = nowPacific()
     return snapshot.workOrders
       .filter((row) => {
         if (status === 'active' && isClosedStatus(row.status)) return false
         if (status !== 'active' && status !== 'all' && row.status !== status) return false
+        if (overdueOnly && !workOrderOverdue(row, now)) return false
         if (priority && !row.priority.startsWith(priority)) return false
-        if (mine && tech && row.assigned_to !== tech.name) return false
+        if (mine && tech && !isAssignedTo(row.assigned_to, tech.name)) return false
         if (!needle) return true
         const asset = snapshot.assets.find((item) => item.asset_id === row.asset_id)
-        const hay = [row.wo_id, row.problem, row.action_taken, row.assigned_to, asset?.name, row.asset_id]
+        const hay = [row.wo_id, row.title, row.problem, row.action_taken, row.assigned_to, asset?.name, row.asset_id]
           .filter(Boolean)
           .join(' ')
           .toLowerCase()
@@ -46,7 +49,7 @@ export function WorkListPage() {
         if (byPriority) return byPriority
         return (a.due ? stampUtc(a.due) : Number.POSITIVE_INFINITY) - (b.due ? stampUtc(b.due) : Number.POSITIVE_INFINITY)
       })
-  }, [snapshot, query, status, priority, mine, tech])
+  }, [snapshot, query, status, overdueOnly, priority, mine, tech])
 
   return (
     <>
@@ -55,6 +58,19 @@ export function WorkListPage() {
         <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search jobs or assets" aria-label="Search work orders" />
       </div>
       <div className="chip-row" role="group" aria-label="Status">
+        <button
+          type="button"
+          className="chip"
+          aria-pressed={overdueOnly}
+          onClick={() => {
+            const next = new URLSearchParams(params)
+            if (overdueOnly) next.delete('due')
+            else next.set('due', 'overdue')
+            setParams(next)
+          }}
+        >
+          Overdue
+        </button>
         {FILTERS.map((value) => (
           <button
             key={value}

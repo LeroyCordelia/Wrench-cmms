@@ -19,7 +19,9 @@ export function SettingsPage() {
     try {
       const result = await importWorkbook(await file.arrayBuffer())
       const warning = result.warnings.length ? ` ${result.warnings.join(' ')}` : ''
-      setMessage(`Loaded ${result.assets} assets, ${result.workOrders} work orders, and ${result.parts} parts onto this phone.${warning}`)
+      setMessage(
+        `Loaded ${result.assets} assets, ${result.workOrders} work orders, ${result.pmSchedules} PM schedules, and ${result.pmTasks + result.woTasks} checklist steps onto this phone.${warning}`,
+      )
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : 'That workbook could not be loaded.')
     } finally {

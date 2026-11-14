@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import type { Asset, WorkOrder } from './domain/types'
-import { duePhrase, isSafetyWork, priorityLabel, priorityRank } from './domain/format'
+import { duePhrase, isSafetyWork, priorityLabel, priorityRank, workOrderOverdue, workOrderTitle } from './domain/format'
 
 export function StatusChip({ status }: { status: string }) {
   return <span className={`chip status status-${status.replace(/\s+/g, '-')}`}>{status}</span>
@@ -24,13 +24,13 @@ export function AssetCard({ asset, location }: { asset: Asset; location: string 
   return (
     <Link to={`/a/${asset.asset_id}`} className={`card card-link stripe-${stripe}`}>
       <div className="between">
-        <CriticalityBadge value={asset.criticality} />
-        <StatusChip status={asset.status} />
+        {asset.criticality ? <CriticalityBadge value={asset.criticality} /> : <span />}
+        {asset.status ? <StatusChip status={asset.status} /> : null}
       </div>
       <h2>{asset.name}</h2>
       <p className="meta">
         <span className="mono">{asset.asset_id}</span>
-        <span>{asset.category}</span>
+        {asset.category ? <span>{asset.category}</span> : null}
       </p>
       <p className="muted">{location}</p>
     </Link>
@@ -48,10 +48,11 @@ export function WorkOrderCard({
 }) {
   const due = duePhrase(workOrder.due, now)
   const safety = isSafetyWork(workOrder.type, workOrder.priority)
+  const overdue = workOrderOverdue(workOrder, now)
   return (
     <Link
       to={`/w/${workOrder.wo_id}`}
-      className={`card card-link stripe-${priorityRank(workOrder.priority)} ${safety ? 'card-safety' : ''}`}
+      className={`card card-link stripe-${priorityRank(workOrder.priority)} ${safety ? 'card-safety' : ''} ${overdue ? 'card-overdue' : ''}`}
     >
       <div className="between">
         <span className="mono">{workOrder.wo_id}</span>
@@ -60,7 +61,7 @@ export function WorkOrderCard({
           <PriorityChip priority={workOrder.priority} />
         </span>
       </div>
-      <h2 className="clamp">{workOrder.problem}</h2>
+      <h2 className="clamp">{workOrderTitle(workOrder)}</h2>
       <p className="muted">{assetName}</p>
       <div className="between wrap">
         <StatusChip status={workOrder.status} />

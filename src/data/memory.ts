@@ -1,7 +1,7 @@
 import { nowPacific } from '../domain/dates'
 import { raiseHighWater } from '../domain/ids'
-import { applyAsset, applyWorkOrder } from '../domain/mutate'
-import { cloneSeed } from '../domain/seed'
+import { applyAsset, applyWorkOrder, replaceWoTasks } from '../domain/mutate'
+import { cloneSeed, normalizeSnapshot } from '../domain/seed'
 import type { AppSettings } from '../domain/types'
 import { snapshotFromWorkbook, workbookFromSnapshot } from './excel'
 import type { CmmsRepository } from './repository'
@@ -16,11 +16,11 @@ export function createMemoryRepository(
   initial = cloneSeed(),
   settings: AppSettings = DEFAULT_SETTINGS,
 ): CmmsRepository {
-  let snap = initial
+  let snap = normalizeSnapshot(initial)
   let prefs = settings
   return {
     async load() {
-      return structuredClone(snap)
+      return structuredClone(normalizeSnapshot(snap))
     },
     async getSettings() {
       return structuredClone(prefs)
@@ -37,6 +37,10 @@ export function createMemoryRepository(
       const result = applyWorkOrder(snap, input, lines, prefs.baseUrl, nowPacific())
       snap = result.snapshot
       return { snapshot: structuredClone(snap), workOrder: result.workOrder }
+    },
+    async saveWoTasks(woId, tasks) {
+      snap = replaceWoTasks(snap, woId, tasks)
+      return structuredClone(snap)
     },
     async importWorkbook(data) {
       const read = snapshotFromWorkbook(data)

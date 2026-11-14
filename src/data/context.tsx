@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { todayPacific } from '../domain/dates'
-import type { AppSettings, Asset, CmmsSnapshot, WoPartInput, WorkOrder, WorkOrderInput, AssetInput } from '../domain/types'
+import type { AppSettings, Asset, AssetInput, CmmsSnapshot, WoPartInput, WoTask, WorkOrder, WorkOrderInput } from '../domain/types'
 import { createIndexedDbRepository } from './indexeddb'
 import type { CmmsRepository } from './repository'
 
@@ -12,9 +12,16 @@ interface ReadyCmms {
   today: string
   saveAsset: (input: AssetInput) => Promise<Asset>
   saveWorkOrder: (input: WorkOrderInput, lines: WoPartInput[]) => Promise<WorkOrder>
-  importWorkbook: (
-    data: ArrayBuffer | Uint8Array,
-  ) => Promise<{ warnings: string[]; assets: number; workOrders: number; parts: number }>
+  saveWoTasks: (woId: string, tasks: WoTask[]) => Promise<void>
+  importWorkbook: (data: ArrayBuffer | Uint8Array) => Promise<{
+    warnings: string[]
+    assets: number
+    workOrders: number
+    parts: number
+    pmSchedules: number
+    pmTasks: number
+    woTasks: number
+  }>
   exportWorkbook: () => Promise<Blob>
   resetDemo: () => Promise<void>
   updateSettings: (patch: Partial<AppSettings>) => Promise<void>
@@ -91,6 +98,9 @@ function buildValue(
       publish(result.snapshot)
       return result.workOrder
     },
+    async saveWoTasks(woId, tasks) {
+      publish(await repo.saveWoTasks(woId, tasks))
+    },
     async importWorkbook(data) {
       const result = await repo.importWorkbook(data)
       publish(result.snapshot)
@@ -99,6 +109,9 @@ function buildValue(
         assets: result.snapshot.assets.length,
         workOrders: result.snapshot.workOrders.length,
         parts: result.snapshot.parts.length,
+        pmSchedules: result.snapshot.pmSchedules.length,
+        pmTasks: result.snapshot.pmTasks.length,
+        woTasks: result.snapshot.woTasks.length,
       }
     },
     async exportWorkbook() {

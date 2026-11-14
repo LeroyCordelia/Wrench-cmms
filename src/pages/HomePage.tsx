@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { QrCode, TriangleExclamationPoint } from 'lucide-react'
 import { useCmms } from '../data/context'
-import { isClosedStatus, isLowStock, isSafetyWork, pmOverdue } from '../domain/format'
+import { isClosedStatus, isLowStock, isSafetyWork, pmOverdue, workOrderOverdue } from '../domain/format'
 import { nowPacific, stampUtc } from '../domain/dates'
 import { usePageMeta } from '../Shell'
 import { WorkOrderCard } from '../ui'
@@ -14,12 +14,18 @@ export function HomePage() {
   const now = nowPacific()
   const active = snapshot.workOrders.filter((row) => !isClosedStatus(row.status))
   const safety = active.filter((row) => isSafetyWork(row.type, row.priority))
-  const counts = {
-    open: active.filter((row) => row.status === 'open').length,
-    progress: active.filter((row) => row.status === 'in progress').length,
-    waiting: active.filter((row) => row.status === 'waiting parts').length,
-    overdue: snapshot.pmSchedules.filter((row) => pmOverdue(row, today)).length,
+  let open = 0
+  let progress = 0
+  let waiting = 0
+  let overdue = 0
+  for (const row of active) {
+    if (row.status === 'open') open += 1
+    else if (row.status === 'in progress') progress += 1
+    else if (row.status === 'waiting parts') waiting += 1
+    if (workOrderOverdue(row, now)) overdue += 1
   }
+  const pmLate = snapshot.pmSchedules.reduce((count, row) => count + (pmOverdue(row, today) ? 1 : 0), 0)
+  const counts = { open, progress, waiting, overdue, pmLate }
   const jobs = [...active].sort((a, b) => {
     const aSafety = isSafetyWork(a.type, a.priority) ? 0 : 1
     const bSafety = isSafetyWork(b.type, b.priority) ? 0 : 1
@@ -44,32 +50,16 @@ export function HomePage() {
           </div>
         </section>
       )}
-      {hasExample && !settings.hideExampleNote && (
-        <section className="example-banner">
-          <div>
-            <strong>Example data</strong>
-            <p>This phone is showing the sample filler, compressor, and jobs. Load your own Excel file in Settings when you are ready.</p>
-          </div>
-          <button className="banner-dismiss" type="button" onClick={() => void updateSettings({ hideExampleNote: true })}>
-            Hide
-          </button>
-        </section>
-      )}
       <p className="muted">Hello, {firstName}</p>
       <h2 style={{ margin: '0 0 12px', color: 'var(--navy)' }}>Suisun City · bottling and cellar</h2>
-      <Link to="/scan" className="scan-hero">
-        <span className="scan-hero-icon">
-          <QrCode size={28} />
-        </span>
-        <span>
-          <strong>Scan QR</strong>
-          <small>Open the asset or job on a label</small>
-        </span>
-      </Link>
       <div className="stat-grid">
         <Link className="stat" to="/work?status=open">
           <strong>{counts.open}</strong>
           <span>Open</span>
+        </Link>
+        <Link className={`stat ${counts.overdue ? 'stat-alert' : ''}`} to="/work?due=overdue">
+          <strong>{counts.overdue}</strong>
+          <span>Overdue</span>
         </Link>
         <Link className="stat" to="/work?status=in%20progress">
           <strong>{counts.progress}</strong>
@@ -79,12 +69,36 @@ export function HomePage() {
           <strong>{counts.waiting}</strong>
           <span>Waiting parts</span>
         </Link>
-        <Link className="stat" to="/pm">
-          <strong>{counts.overdue}</strong>
+        <Link className={`stat ${counts.pmLate ? 'stat-alert' : ''}`} to="/pm">
+          <strong>{counts.pmLate}</strong>
           <span>PM overdue</span>
         </Link>
+        <Link className="stat" to="/assets">
+          <strong>{snapshot.assets.length}</strong>
+          <span>Assets</span>
+        </Link>
       </div>
-      <h3 className="section-title">Open jobs</h3>
+      <Link to="/scan" className="scan-hero">
+        <span className="scan-hero-icon">
+          <QrCode size={28} />
+        </span>
+        <span>
+          <strong>Scan QR</strong>
+          <small>Open the asset or job on a label</small>
+        </span>
+      </Link>
+      {hasExample && !settings.hideExampleNote && (
+        <section className="example-banner" style={{ marginTop: 12 }}>
+          <div>
+            <strong>Example data</strong>
+            <p>This phone is showing the sample filler, compressor, and jobs. Load your own Excel file in Settings when you are ready.</p>
+          </div>
+          <button className="banner-dismiss" type="button" onClick={() => void updateSettings({ hideExampleNote: true })}>
+            Hide
+          </button>
+        </section>
+      )}
+      <h3 className="section-title">{counts.overdue ? 'Overdue and open jobs' : 'Open jobs'}</h3>
       <div className="stack">
         {jobs.slice(0, 6).map((workOrder) => (
           <WorkOrderCard
